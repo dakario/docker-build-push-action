@@ -9,13 +9,10 @@ function main() {
   sanitize "${INPUT_PASSWORD}" "password"
   sanitize "${INPUT_REGISTRY}" "registry"
 
-
-  REGISTRY_NO_PROTOCOL=$(echo "${INPUT_REGISTRY}" | sed -e 's/^https:\/\///g')
-  if uses "${INPUT_REGISTRY}" && ! isPartOfTheName "${REGISTRY_NO_PROTOCOL}"; then
-    INPUT_NAME="${REGISTRY_NO_PROTOCOL}/${INPUT_NAME}"
-  fi
-
+  docker images
+  
   translateDockerTag
+
   DOCKERNAME="${INPUT_REGISTRY/INPUT_NAME}:${TAG}"
 
   echo ${INPUT_PASSWORD} | docker login -u ${INPUT_USERNAME} --password-stdin ${INPUT_REGISTRY}
