@@ -2,7 +2,6 @@
 set -e
 
 function main() {
-  echo "" # see https://github.com/actions/toolkit/issues/168
 
   sanitize "${INPUT_NAME}" "name"
   sanitize "${INPUT_USERNAME}" "username"
@@ -33,7 +32,6 @@ function main() {
 }
 
 function buildImage(){
-  
   docker build -t "$INPUT_NAME" .
   docker images
 }
