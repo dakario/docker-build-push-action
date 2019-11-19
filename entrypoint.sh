@@ -7,11 +7,9 @@ function main() {
   sanitize "${INPUT_NAME}" "name"
   sanitize "${INPUT_USERNAME}" "username"
   sanitize "${INPUT_PASSWORD}" "password"
-  sanitize "${INPUT_REGISTRY}" "registry"
 
   translateDockerTag
-
-  FULLNAME="${INPUT_REGISTRY}/${INPUT_NAME}:${TAG}"
+  DOCKERNAME="${INPUT_NAME}:${TAG}"
 
   echo ${INPUT_PASSWORD} | docker login -u ${INPUT_USERNAME} --password-stdin ${INPUT_REGISTRY}
 
@@ -31,12 +29,13 @@ function main() {
 }
 
 function buildImage(){
-  docker build -t "${FULLNAME}" .
+  
+  docker build -t "${INPUT_NAME}" .
   docker images
 }
 
 function pushImage(){
-  docker push "${FULLNAME}"
+  docker push "${INPUT_NAME}"
 }
 
 function sanitize() {
