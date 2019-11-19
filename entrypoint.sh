@@ -7,17 +7,16 @@ function main() {
   sanitize "${INPUT_NAME}" "name"
   sanitize "${INPUT_USERNAME}" "username"
   sanitize "${INPUT_PASSWORD}" "password"
-  sanitize "${INPUT_REGISTRY}" "registry"
 
-  docker images
-  echo "c'est bon 1"
+  REGISTRY_NO_PROTOCOL=$(echo "${INPUT_REGISTRY}" | sed -e 's/^https:\/\///g')
+  if uses "${INPUT_REGISTRY}" && ! isPartOfTheName "${REGISTRY_NO_PROTOCOL}"; then
+    INPUT_NAME="${REGISTRY_NO_PROTOCOL}/${INPUT_NAME}"
+  fi
+
   translateDockerTag
-  echo "c'est bon 2"
-  DOCKERNAME="${INPUT_REGISTRY/INPUT_NAME}:${TAG}"
-  echo "c'est bon 3"
+
   echo ${INPUT_PASSWORD} | docker login -u ${INPUT_USERNAME} --password-stdin ${INPUT_REGISTRY}
-  echo "c'est bon 4"
-  
+
   BUILDPARAMS=""
 
   if uses "${INPUT_BUILDARGS}"; then
@@ -35,12 +34,12 @@ function main() {
 
 function buildImage(){
   
-  docker build -t "$DOCKERNAME" .
+  docker build -t "$INPUT_NAME" .
   docker images
 }
 
 function pushImage(){
-  docker push "$DOCKERNAME"
+  docker push "$INPUT_NAME"
 }
 
 function sanitize() {
