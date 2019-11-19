@@ -1,0 +1,18 @@
+name: 'build docker image and push them'
+description: 'build the docker image'
+inputs:
+  image-tag:
+    description: 'name for your repository'
+    required: true
+  username:
+    description: 'username for your repository'
+    required: true
+  password:
+    description: 'your password'
+    required: true
+runs: |
+  docker images
+  docker build -t ${{ image-tag }} .
+  docker images
+  docker login -u ${{ username }} -p ${{ password }}
+  docker push ${{ image-tag }}
