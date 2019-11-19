@@ -35,7 +35,7 @@ function main() {
 }
 
 function buildImage(){
-  docker build -t "${INPUT_NAME}" "$BUILDPARAMS" .
+  docker build -t "${INPUT_NAME}" .
   docker images
 }
 
