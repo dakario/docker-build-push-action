@@ -12,7 +12,7 @@ inputs:
     required: true
 runs: |
   docker images
-  docker build -t ${{ image-tag }} .
+  docker build -t ${{ inputs.image-tag }} .
   docker images
-  docker login -u ${{ username }} -p ${{ password }}
-  docker push ${{ image-tag }}
+  docker login -u ${{ inputs.username }} -p ${{ inputs.password }}
+  docker push ${{ inputs.image-tag }}
