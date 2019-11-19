@@ -10,13 +10,14 @@ function main() {
   sanitize "${INPUT_REGISTRY}" "registry"
 
   docker images
-  
+  echo "c'est bon 1"
   translateDockerTag
-
+  echo "c'est bon 2"
   DOCKERNAME="${INPUT_REGISTRY/INPUT_NAME}:${TAG}"
-
+  echo "c'est bon 3"
   echo ${INPUT_PASSWORD} | docker login -u ${INPUT_USERNAME} --password-stdin ${INPUT_REGISTRY}
-
+  echo "c'est bon 4"
+  
   BUILDPARAMS=""
 
   if uses "${INPUT_BUILDARGS}"; then
