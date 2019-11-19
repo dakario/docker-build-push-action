@@ -8,8 +8,7 @@ function main() {
   sanitize "${INPUT_USERNAME}" "username"
   sanitize "${INPUT_PASSWORD}" "password"
 
-  buildImage
-  
+
   REGISTRY_NO_PROTOCOL=$(echo "${INPUT_REGISTRY}" | sed -e 's/^https:\/\///g')
   if uses "${INPUT_REGISTRY}" && ! isPartOfTheName "${REGISTRY_NO_PROTOCOL}"; then
     INPUT_NAME="${REGISTRY_NO_PROTOCOL}/${INPUT_NAME}"
@@ -26,14 +25,22 @@ function main() {
     addBuildArgs
   fi
 
+  buildImage
+
+  pushImage
+
   echo ::set-output name=tag::"${TAG}"
 
   docker logout
 }
 
 function buildImage(){
-  docker build -t "${INPUT_NAME}" .
+  docker build -t "${INPUT_NAME}" "$BUILDPARAMS" .
   docker images
+}
+
+function pushImage(){
+  docker push "${INPUT_NAME}"
 }
 
 function sanitize() {
