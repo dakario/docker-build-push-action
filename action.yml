@@ -12,7 +12,7 @@ inputs:
     required: true
   registry:
     description: 'Use registry for pushing to a custom registry'
-    required: false
+    required: true
   buildargs:
     description: 'Use buildargs when you want to pass a list of environment variables as build-args'
     required: false
