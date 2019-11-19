@@ -37,12 +37,12 @@ function main() {
 
 function buildImage(){
   
-  docker build -t "${DOCKERNAME}" .
+  docker build -t "$DOCKERNAME" .
   docker images
 }
 
 function pushImage(){
-  docker push "${DOCKERNAME}"
+  docker push "$DOCKERNAME"
 }
 
 function sanitize() {
